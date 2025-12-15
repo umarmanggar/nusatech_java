@@ -26,7 +26,7 @@
                 <div class="hero-shape hero-shape-2"></div>
             </div>
             <div class="auth-visual-content">
-                <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="NusaTech" class="auth-visual-logo">
+                <img src="${pageContext.request.contextPath}/assets/image/logo.png" alt="NusaTech" class="auth-visual-logo">
                 <h2 class="auth-visual-title">Selamat Datang Kembali!</h2>
                 <p class="auth-visual-description">
                     Lanjutkan perjalanan belajar coding Anda dan raih impian karir di bidang teknologi.

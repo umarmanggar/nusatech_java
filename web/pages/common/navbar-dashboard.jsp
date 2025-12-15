@@ -8,7 +8,7 @@
 <nav class="navbar">
     <div class="navbar-container">
         <a href="${pageContext.request.contextPath}/" class="navbar-brand">
-            <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="NusaTech">
+            <img src="${pageContext.request.contextPath}/assets/image/logo.png" alt="NusaTech">
             <span class="navbar-brand-text">NUSA<span>TECH</span></span>
         </a>
         <div class="navbar-menu">

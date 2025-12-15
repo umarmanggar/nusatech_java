@@ -31,7 +31,7 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
             <a href="${pageContext.request.contextPath}/" class="navbar-brand">
-                <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="NusaTech Logo">
+                <img src="${pageContext.request.contextPath}/assets/image/logo.png" alt="NusaTech Logo">
                 <span class="navbar-brand-text">NUSA<span>TECH</span></span>
             </a>
             
@@ -326,7 +326,7 @@
             <div class="footer-grid">
                 <div>
                     <div class="footer-brand">
-                        <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="NusaTech">
+                        <img src="${pageContext.request.contextPath}/assets/image/logo.png" alt="NusaTech">
                         <span class="footer-brand-text">NUSA<span>TECH</span></span>
                     </div>
                     <p class="footer-description">

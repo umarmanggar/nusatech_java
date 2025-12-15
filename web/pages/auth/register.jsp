@@ -34,7 +34,7 @@
         <div class="auth-visual">
             <div class="hero-shapes"><div class="hero-shape hero-shape-1"></div><div class="hero-shape hero-shape-2"></div></div>
             <div class="auth-visual-content">
-                <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="NusaTech" class="auth-visual-logo">
+                <img src="${pageContext.request.contextPath}/assets/image/logo.png" alt="NusaTech" class="auth-visual-logo">
                 <h2 class="auth-visual-title">Mulai Perjalanan Anda</h2>
                 <p class="auth-visual-description">Bergabunglah dengan ribuan pelajar dan pengajar untuk membangun masa depan Indonesia.</p>
             </div>

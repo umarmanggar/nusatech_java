@@ -73,14 +73,44 @@ public class CourseController extends HttpServlet {
                 case "/search":
                     searchCourses(request, response);
                     break;
+                case "/categories":
+                    listCategories(request, response);
+                    break;
+                case "/about":
+                    showAbout(request, response);
+                    break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/courses");
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Terjadi kesalahan saat memuat data");
-            request.getRequestDispatcher("/pages/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/error/500.jsp").forward(request, response);
         }
+    }
+    
+    /**
+     * List all categories
+     */
+    private void listCategories(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        
+        List<Category> categories = categoryDAO.findAllActive();
+        int totalCourses = courseDAO.countPublished();
+        
+        request.setAttribute("categories", categories);
+        request.setAttribute("totalCourses", totalCourses);
+        
+        request.getRequestDispatcher("/pages/category/list.jsp").forward(request, response);
+    }
+    
+    /**
+     * Show about page
+     */
+    private void showAbout(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        request.getRequestDispatcher("/pages/about.jsp").forward(request, response);
     }
     
     /**

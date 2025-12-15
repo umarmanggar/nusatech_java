@@ -86,6 +86,14 @@
         <servlet-name>CourseController</servlet-name>
         <url-pattern>/search</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseController</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseController</servlet-name>
+        <url-pattern>/about</url-pattern>
+    </servlet-mapping>
     
     <!-- Admin Controller -->
     <servlet>

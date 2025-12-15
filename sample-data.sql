@@ -1,6 +1,6 @@
 -- Sample Data for NusaTech Learning Platform
 -- Run this AFTER nusatech.sql
--- Versi yang diperbaiki untuk menghindari error
+-- Versi yang diperbaiki
 
 USE nusatech;
 
@@ -8,26 +8,8 @@ USE nusatech;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- --------------------------------------------------------
--- Clear existing sample data (optional - uncomment if needed)
--- --------------------------------------------------------
--- DELETE FROM forum_posts;
--- DELETE FROM forums;
--- DELETE FROM reviews;
--- DELETE FROM enrollments;
--- DELETE FROM transaction_items;
--- DELETE FROM transactions;
--- DELETE FROM wishlist;
--- DELETE FROM materials;
--- DELETE FROM sections;
--- DELETE FROM courses;
--- DELETE FROM student_profiles WHERE student_id > 1;
--- DELETE FROM lecturer_profiles;
--- DELETE FROM users WHERE user_id > 1;
-
--- --------------------------------------------------------
 -- Sample Users
--- Password: 123 (simple for testing)
--- SHA-256 hash of "123" = a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3
+-- Password: 123 (SHA-256 hash)
 -- --------------------------------------------------------
 
 -- Lecturers (user_id 2, 3, 4)
@@ -65,19 +47,20 @@ INSERT INTO `users` (`user_id`, `email`, `password`, `name`, `phone`, `profile_p
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- --------------------------------------------------------
--- Lecturer Profiles
+-- Lecturer Profiles (sesuai struktur tabel yang benar)
+-- Kolom: lecturer_id, bio, expertise, linkedin_url, website_url, total_students, total_courses, avg_rating, is_verified
 -- --------------------------------------------------------
-INSERT INTO `lecturer_profiles` (`lecturer_id`, `headline`, `bio`, `expertise`, `total_courses`, `total_students`, `avg_rating`) VALUES
-(2, 'Senior Full-Stack Developer', 'Berpengalaman 10+ tahun di industri software development.', 'JavaScript, React, Node.js, Python', 3, 150, 4.85)
-ON DUPLICATE KEY UPDATE headline = VALUES(headline);
+INSERT INTO `lecturer_profiles` (`lecturer_id`, `bio`, `expertise`, `total_courses`, `total_students`, `avg_rating`, `is_verified`) VALUES
+(2, 'Berpengalaman 10+ tahun di industri software development. Pernah bekerja di berbagai startup unicorn Indonesia.', 'JavaScript, React, Node.js, Python', 3, 150, 4.85, 1)
+ON DUPLICATE KEY UPDATE bio = VALUES(bio);
 
-INSERT INTO `lecturer_profiles` (`lecturer_id`, `headline`, `bio`, `expertise`, `total_courses`, `total_students`, `avg_rating`) VALUES
-(3, 'Data Scientist & AI Specialist', 'PhD in Computer Science, specializing in Machine Learning.', 'Python, Machine Learning, Deep Learning', 2, 89, 4.92)
-ON DUPLICATE KEY UPDATE headline = VALUES(headline);
+INSERT INTO `lecturer_profiles` (`lecturer_id`, `bio`, `expertise`, `total_courses`, `total_students`, `avg_rating`, `is_verified`) VALUES
+(3, 'PhD in Computer Science, specializing in Machine Learning and Artificial Intelligence.', 'Python, Machine Learning, Deep Learning, Data Analysis', 2, 89, 4.92, 1)
+ON DUPLICATE KEY UPDATE bio = VALUES(bio);
 
-INSERT INTO `lecturer_profiles` (`lecturer_id`, `headline`, `bio`, `expertise`, `total_courses`, `total_students`, `avg_rating`) VALUES
-(4, 'Cloud Architecture Expert', 'AWS Certified Solutions Architect. 8 tahun pengalaman.', 'AWS, GCP, Docker, Kubernetes', 2, 75, 4.78)
-ON DUPLICATE KEY UPDATE headline = VALUES(headline);
+INSERT INTO `lecturer_profiles` (`lecturer_id`, `bio`, `expertise`, `total_courses`, `total_students`, `avg_rating`, `is_verified`) VALUES
+(4, 'AWS Certified Solutions Architect. 8 tahun pengalaman di cloud computing.', 'AWS, GCP, Docker, Kubernetes, DevOps', 2, 75, 4.78, 1)
+ON DUPLICATE KEY UPDATE bio = VALUES(bio);
 
 -- --------------------------------------------------------
 -- Student Profiles
@@ -252,7 +235,7 @@ INSERT INTO `materials` (`material_id`, `section_id`, `title`, `content_type`, `
 ON DUPLICATE KEY UPDATE title = VALUES(title);
 
 -- --------------------------------------------------------
--- Sample Enrollments (tanpa trigger conflict)
+-- Sample Enrollments
 -- --------------------------------------------------------
 INSERT INTO `enrollments` (`enrollment_id`, `student_id`, `course_id`, `enrolled_at`, `progress_percentage`, `last_accessed_at`, `completed_at`, `certificate_issued`, `status`) VALUES
 (1, 5, 1, DATE_SUB(NOW(), INTERVAL 20 DAY), 100.00, NOW(), DATE_SUB(NOW(), INTERVAL 5 DAY), 1, 'COMPLETED')
@@ -311,7 +294,7 @@ ON DUPLICATE KEY UPDATE title = VALUES(title);
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
 
--- Update statistics
+-- Update course statistics
 UPDATE courses c SET 
     total_sections = (SELECT COUNT(*) FROM sections s WHERE s.course_id = c.course_id),
     total_materials = (SELECT COUNT(*) FROM materials m JOIN sections s ON m.section_id = s.section_id WHERE s.course_id = c.course_id)

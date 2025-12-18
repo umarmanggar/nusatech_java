@@ -1233,8 +1233,12 @@ h6 { font-size: var(--font-size-base); }
 }
 
 .auth-visual-logo {
-    width: 120px;
-    margin: 0 auto var(--space-8);
+    width: 80px;
+    height: 80px;
+    max-width: 80px;
+    max-height: 80px;
+    object-fit: contain;
+    margin: 0 auto var(--space-6);
 }
 
 .auth-visual-title {

@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Controller for admin-specific operations
  */
-@WebServlet(name = "AdminController", urlPatterns = {"/AdminController"})
+@WebServlet(name = "AdminController", urlPatterns = {"/admin/*"})
 public class AdminController extends HttpServlet {
 
     private CourseDAO courseDAO;
@@ -70,6 +70,9 @@ public class AdminController extends HttpServlet {
                 listTransactions(request, response);
             } else if (pathInfo.equals("/settings")) {
                 showSettings(request, response);
+            } else if (pathInfo.startsWith("/users/edit/")) {
+                String userIdStr = pathInfo.substring("/users/edit/".length());
+                showEditUser(request, response, Integer.parseInt(userIdStr));
             } else {
                 showDashboard(request, response);
             }
@@ -114,6 +117,14 @@ public class AdminController extends HttpServlet {
                     updateCategory(request, response);
                 } else if (pathInfo.equals("/category/delete")) {
                     deleteCategory(request, response);
+                } else if (pathInfo.startsWith("/users/update/")) {
+                    String userIdStr = pathInfo.substring("/users/update/".length());
+                    updateUser(request, response, Integer.parseInt(userIdStr));
+                } else if (pathInfo.startsWith("/users/delete/")) {
+                    String userIdStr = pathInfo.substring("/users/delete/".length());
+                    deleteUser(request, response, Integer.parseInt(userIdStr));
+                } else if (pathInfo.equals("/categories/save")) {
+                    saveCategory(request, response);
                 } else {
                     response.sendRedirect(request.getContextPath() + "/admin/dashboard");
                 }
@@ -455,6 +466,140 @@ public class AdminController extends HttpServlet {
         
         HttpSession session = request.getSession();
         session.setAttribute("successMessage", "Kategori berhasil dihapus");
+        
+        response.sendRedirect(request.getContextPath() + "/admin/categories");
+    }
+    
+    /**
+     * Show edit user form
+     */
+    private void showEditUser(HttpServletRequest request, HttpServletResponse response, int userId) 
+            throws ServletException, IOException, SQLException {
+        User targetUser = userDAO.findById(userId);
+        
+        if (targetUser == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User tidak ditemukan");
+            return;
+        }
+        
+        request.setAttribute("targetUser", targetUser);
+        request.getRequestDispatcher("/pages/admin/user-edit.jsp").forward(request, response);
+    }
+    
+    /**
+     * Update user
+     */
+    private void updateUser(HttpServletRequest request, HttpServletResponse response, int userId) 
+            throws ServletException, IOException, SQLException {
+        User targetUser = userDAO.findById(userId);
+        
+        if (targetUser == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User tidak ditemukan");
+            return;
+        }
+        
+        // Update fields
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String roleStr = request.getParameter("role");
+        String isActiveStr = request.getParameter("isActive");
+        String emailVerifiedStr = request.getParameter("emailVerified");
+        
+        if (name != null && !name.isEmpty()) {
+            targetUser.setName(name);
+        }
+        targetUser.setPhone(phone);
+        
+        if (roleStr != null && !roleStr.isEmpty()) {
+            targetUser.setRole(User.Role.valueOf(roleStr));
+        }
+        
+        targetUser.setActive("true".equals(isActiveStr) || "on".equals(isActiveStr));
+        targetUser.setEmailVerified("true".equals(emailVerifiedStr) || "on".equals(emailVerifiedStr));
+        
+        // Update password if provided
+        String newPassword = request.getParameter("newPassword");
+        if (newPassword != null && !newPassword.isEmpty()) {
+            userDAO.updatePassword(userId, newPassword);
+        }
+        
+        userDAO.update(targetUser);
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("successMessage", "User berhasil diperbarui");
+        
+        response.sendRedirect(request.getContextPath() + "/admin/users");
+    }
+    
+    /**
+     * Soft delete user
+     */
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response, int userId) 
+            throws ServletException, IOException, SQLException {
+        // Don't allow deleting yourself
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
+        
+        if (currentUser.getUserId() == userId) {
+            session.setAttribute("errorMessage", "Tidak dapat menghapus akun sendiri");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
+            return;
+        }
+        
+        // Soft delete
+        userDAO.delete(userId);
+        
+        session.setAttribute("successMessage", "User berhasil dinonaktifkan");
+        response.sendRedirect(request.getContextPath() + "/admin/users");
+    }
+    
+    /**
+     * Save category (create or update)
+     */
+    private void saveCategory(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException, SQLException {
+        String categoryIdStr = request.getParameter("categoryId");
+        
+        Category category;
+        boolean isNew = (categoryIdStr == null || categoryIdStr.isEmpty() || "0".equals(categoryIdStr));
+        
+        if (isNew) {
+            category = new Category();
+        } else {
+            category = categoryDAO.findById(Integer.parseInt(categoryIdStr));
+            if (category == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+        }
+        
+        category.setName(request.getParameter("name"));
+        category.setSlug(request.getParameter("slug"));
+        category.setDescription(request.getParameter("description"));
+        category.setIcon(request.getParameter("icon"));
+        category.setColor(request.getParameter("color"));
+        category.setActive("true".equals(request.getParameter("isActive")) || "on".equals(request.getParameter("isActive")));
+        
+        String displayOrder = request.getParameter("displayOrder");
+        if (displayOrder != null && !displayOrder.isEmpty()) {
+            category.setDisplayOrder(Integer.parseInt(displayOrder));
+        }
+        
+        HttpSession session = request.getSession();
+        
+        if (isNew) {
+            // Check if slug exists
+            if (categoryDAO.slugExists(category.getSlug())) {
+                session.setAttribute("errorMessage", "Slug sudah digunakan");
+                response.sendRedirect(request.getContextPath() + "/admin/categories");
+                return;
+            }
+            categoryDAO.create(category);
+            session.setAttribute("successMessage", "Kategori berhasil ditambahkan");
+        } else {
+            categoryDAO.update(category);
+            session.setAttribute("successMessage", "Kategori berhasil diperbarui");
+        }
         
         response.sendRedirect(request.getContextPath() + "/admin/categories");
     }

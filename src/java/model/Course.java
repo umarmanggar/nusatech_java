@@ -5,6 +5,7 @@
 package model;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.ArrayList;
 /**
@@ -204,7 +205,7 @@ public class Course {
     public int getDiscountPercentage() {
         if (!hasDiscount()) return 0;
         BigDecimal discount = price.subtract(discountPrice);
-        return discount.multiply(new BigDecimal(100)).divide(price, 0, BigDecimal.ROUND_HALF_UP).intValue();
+        return discount.multiply(new BigDecimal(100)).divide(price, 0, RoundingMode.HALF_UP).intValue();
     }
     
     @Override

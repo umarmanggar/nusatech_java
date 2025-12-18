@@ -78,6 +78,74 @@ public class SectionDAO {
         }
     }
     
+    /**
+     * Reorder sections for a course
+     * @param courseId the course ID
+     * @param sectionIds list of section IDs in new order
+     * @return true if successful
+     */
+    public boolean reorderSections(int courseId, List<Integer> sectionIds) throws SQLException {
+        String sql = "UPDATE sections SET display_order = ? WHERE section_id = ? AND course_id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            conn.setAutoCommit(false);
+            try {
+                for (int i = 0; i < sectionIds.size(); i++) {
+                    ps.setInt(1, i);
+                    ps.setInt(2, sectionIds.get(i));
+                    ps.setInt(3, courseId);
+                    ps.addBatch();
+                }
+                int[] results = ps.executeBatch();
+                conn.commit();
+                
+                for (int result : results) {
+                    if (result < 0 && result != Statement.SUCCESS_NO_INFO) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        }
+    }
+    
+    /**
+     * Get next display order for a course
+     */
+    public int getNextDisplayOrder(int courseId) throws SQLException {
+        String sql = "SELECT COALESCE(MAX(display_order), -1) + 1 FROM sections WHERE course_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, courseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+    
+    /**
+     * Count sections by course
+     */
+    public int countByCourse(int courseId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM sections WHERE course_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, courseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+    
     private Section mapResultSet(ResultSet rs) throws SQLException {
         Section s = new Section();
         s.setSectionId(rs.getInt("section_id"));

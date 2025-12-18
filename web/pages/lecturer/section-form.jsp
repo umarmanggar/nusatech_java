@@ -1,8 +1,8 @@
 <%-- 
-    Document   : course-content
-    Created on : Dec 15, 2025
+    Document   : section-form
+    Created on : Dec 18, 2025
     Author     : NusaTech
-    Description: Course Content Management with Bootstrap 5 and Drag & Drop
+    Description: Course Sections Management with Drag & Drop
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -42,46 +42,33 @@
         .sidebar-divider { height: 1px; background: #e5e7eb; margin: 1rem 0; }
         
         .course-header { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .course-header-img { width: 120px; height: 68px; border-radius: 0.5rem; object-fit: cover; }
-        
-        .stat-card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); text-align: center; }
-        .stat-icon { width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin: 0 auto 0.75rem; }
-        .stat-icon.primary { background: rgba(139, 21, 56, 0.1); color: var(--primary); }
-        .stat-icon.success { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-        .stat-icon.info { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-        .stat-icon.warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-        .stat-value { font-size: 1.5rem; font-weight: 800; color: #1f2937; }
-        .stat-label { font-size: 0.8rem; color: #6b7280; }
+        .course-header-img { width: 100px; height: 60px; border-radius: 0.5rem; object-fit: cover; }
         
         .section-card { background: white; border-radius: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden; }
         .section-header { padding: 1rem 1.25rem; background: #f8f9fa; cursor: grab; display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid #e5e7eb; }
         .section-header:active { cursor: grabbing; }
         .section-drag-handle { color: #9ca3af; font-size: 1.1rem; }
         .section-title { font-weight: 700; flex-grow: 1; margin: 0; }
-        .section-body { padding: 0; }
-        .section-collapsed .section-body { display: none; }
+        .section-body { padding: 1rem 1.25rem; }
         
-        .material-item { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: white; border-bottom: 1px solid #f3f4f6; cursor: grab; transition: all 0.2s; }
-        .material-item:last-child { border-bottom: none; }
-        .material-item:hover { background: #fafafa; }
+        .material-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: #fafafa; border-radius: 0.75rem; margin-bottom: 0.5rem; cursor: grab; transition: all 0.2s; }
+        .material-item:hover { background: #f3f4f6; }
         .material-item:active { cursor: grabbing; }
-        .material-icon { width: 40px; height: 40px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .material-icon { width: 36px; height: 36px; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
         .material-icon.video { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
         .material-icon.text { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
         .material-icon.pdf { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
         .material-icon.quiz { background: rgba(139, 21, 56, 0.1); color: var(--primary); }
-        .material-info { flex-grow: 1; min-width: 0; }
-        .material-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .material-info { flex-grow: 1; }
+        .material-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.15rem; }
         .material-meta { font-size: 0.75rem; color: #6b7280; }
         
-        .add-btn { border: 2px dashed #d1d5db; background: transparent; color: #6b7280; font-weight: 600; }
-        .add-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(139, 21, 56, 0.02); }
+        .add-section-btn, .add-material-btn { border: 2px dashed #d1d5db; background: transparent; color: #6b7280; font-weight: 600; }
+        .add-section-btn:hover, .add-material-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(139, 21, 56, 0.02); }
         
         .section-card.dragging { opacity: 0.5; transform: scale(1.02); }
         .material-item.dragging { opacity: 0.5; background: #e5e7eb; }
-        
-        .empty-state { text-align: center; padding: 4rem 2rem; background: white; border-radius: 1rem; }
-        .empty-state-icon { width: 100px; height: 100px; background: rgba(139, 21, 56, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2.5rem; color: var(--primary); }
+        .drop-zone { border: 2px dashed var(--primary); background: rgba(139, 21, 56, 0.05); border-radius: 0.75rem; min-height: 50px; }
         
         @media (max-width: 991.98px) {
             .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
@@ -138,11 +125,10 @@
                          alt="${course.title}" class="course-header-img">
                     <div class="flex-grow-1">
                         <h4 class="fw-bold mb-1">${course.title}</h4>
-                        <div class="d-flex flex-wrap gap-3 text-muted small">
-                            <span><i class="fas fa-layer-group me-1"></i>${sections != null ? sections.size() : 0} Bab</span>
-                            <span><i class="fas fa-file-alt me-1"></i>${course.totalMaterials != null ? course.totalMaterials : 0} Materi</span>
+                        <div class="text-muted small">
+                            <span class="me-3"><i class="fas fa-layer-group me-1"></i>${sections != null ? sections.size() : 0} Bab</span>
+                            <span class="me-3"><i class="fas fa-file-alt me-1"></i>${totalMaterials != null ? totalMaterials : 0} Materi</span>
                             <span><i class="fas fa-clock me-1"></i>${course.durationHours != null ? course.durationHours : 0} jam</span>
-                            <span class="badge ${course.status == 'PUBLISHED' ? 'bg-success' : course.status == 'PENDING' ? 'bg-warning' : 'bg-secondary'}">${course.statusDisplayName}</span>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
@@ -164,117 +150,95 @@
                 <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-circle me-2"></i>${error}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
             </c:if>
             
-            <!-- Info -->
+            <!-- Info Alert -->
             <div class="alert alert-info d-flex align-items-center mb-4">
                 <i class="fas fa-info-circle me-2"></i>
-                <span>Seret bab atau materi untuk mengubah urutan. Klik header bab untuk memperluas/menyembunyikan isinya.</span>
+                <span>Seret bab atau materi untuk mengubah urutan. Perubahan akan tersimpan otomatis.</span>
             </div>
             
             <!-- Sections List -->
-            <c:choose>
-                <c:when test="${not empty sections}">
-                    <div id="sectionsContainer">
-                        <c:forEach var="section" items="${sections}" varStatus="status">
-                            <div class="section-card" data-section-id="${section.sectionId}" draggable="true">
-                                <div class="section-header" onclick="toggleSection(this)">
-                                    <span class="section-drag-handle" onclick="event.stopPropagation();"><i class="fas fa-grip-vertical"></i></span>
-                                    <span class="badge bg-secondary me-2">${status.index + 1}</span>
-                                    <h5 class="section-title">${section.title}</h5>
-                                    <span class="badge bg-light text-dark me-2">${section.materials != null ? section.materials.size() : 0} materi</span>
-                                    <c:if test="${section.preview}">
-                                        <span class="badge bg-success me-2">Free Preview</span>
-                                    </c:if>
-                                    <div class="btn-group" onclick="event.stopPropagation();">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editSection(${section.sectionId}, '${section.title}', '${section.description}', ${section.preview})" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSection(${section.sectionId}, '${section.title}')" title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                    <i class="fas fa-chevron-down ms-2 text-muted section-toggle-icon"></i>
-                                </div>
-                                <div class="section-body">
-                                    <div class="materials-list" data-section-id="${section.sectionId}">
-                                        <c:forEach var="material" items="${section.materials}">
-                                            <div class="material-item" data-material-id="${material.materialId}" draggable="true">
-                                                <span class="drag-handle text-muted"><i class="fas fa-grip-vertical"></i></span>
-                                                <div class="material-icon ${material.contentType.toString().toLowerCase()}">
-                                                    <c:choose>
-                                                        <c:when test="${material.contentType == 'VIDEO'}"><i class="fas fa-play"></i></c:when>
-                                                        <c:when test="${material.contentType == 'TEXT'}"><i class="fas fa-file-alt"></i></c:when>
-                                                        <c:when test="${material.contentType == 'PDF'}"><i class="fas fa-file-pdf"></i></c:when>
-                                                        <c:when test="${material.contentType == 'QUIZ'}"><i class="fas fa-question-circle"></i></c:when>
-                                                        <c:otherwise><i class="fas fa-file"></i></c:otherwise>
-                                                    </c:choose>
-                                                </div>
-                                                <div class="material-info">
-                                                    <div class="material-title">${material.title}</div>
-                                                    <div class="material-meta">
-                                                        ${material.contentType} 
-                                                        <c:if test="${material.duration > 0}">• ${material.duration} menit</c:if>
-                                                        <c:if test="${material.preview}"><span class="badge bg-success ms-1" style="font-size: 0.65rem;">Free</span></c:if>
-                                                    </div>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <c:choose>
-                                                        <c:when test="${material.contentType == 'QUIZ'}">
-                                                            <a href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/quiz/${material.materialId}" class="btn btn-sm btn-outline-primary" title="Edit Quiz">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <a href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/material/${material.materialId}" class="btn btn-sm btn-outline-primary" title="Edit">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteMaterial(${material.materialId}, '${material.title}')" title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
+            <div id="sectionsContainer">
+                <c:forEach var="section" items="${sections}" varStatus="status">
+                    <div class="section-card" data-section-id="${section.sectionId}" draggable="true">
+                        <div class="section-header">
+                            <span class="section-drag-handle"><i class="fas fa-grip-vertical"></i></span>
+                            <span class="badge bg-secondary me-2">${status.index + 1}</span>
+                            <h5 class="section-title">${section.title}</h5>
+                            <span class="text-muted small me-2">${section.materials != null ? section.materials.size() : 0} materi</span>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editSection(${section.sectionId}, '${section.title}', '${section.description}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSection(${section.sectionId}, '${section.title}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <div class="materials-list" data-section-id="${section.sectionId}">
+                                <c:forEach var="material" items="${section.materials}">
+                                    <div class="material-item" data-material-id="${material.materialId}" draggable="true">
+                                        <span class="drag-handle text-muted"><i class="fas fa-grip-vertical"></i></span>
+                                        <div class="material-icon ${material.contentType.toString().toLowerCase()}">
+                                            <c:choose>
+                                                <c:when test="${material.contentType == 'VIDEO'}"><i class="fas fa-play"></i></c:when>
+                                                <c:when test="${material.contentType == 'TEXT'}"><i class="fas fa-file-alt"></i></c:when>
+                                                <c:when test="${material.contentType == 'PDF'}"><i class="fas fa-file-pdf"></i></c:when>
+                                                <c:when test="${material.contentType == 'QUIZ'}"><i class="fas fa-question-circle"></i></c:when>
+                                                <c:otherwise><i class="fas fa-file"></i></c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="material-info">
+                                            <div class="material-title">${material.title}</div>
+                                            <div class="material-meta">
+                                                ${material.contentType} 
+                                                <c:if test="${material.duration > 0}">• ${material.duration} menit</c:if>
+                                                <c:if test="${material.isFree}"><span class="badge bg-success ms-1">Free Preview</span></c:if>
                                             </div>
-                                        </c:forEach>
-                                    </div>
-                                    
-                                    <!-- Add Material Dropdown -->
-                                    <div class="p-3 border-top">
-                                        <div class="dropdown">
-                                            <button class="btn add-btn w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                                <i class="fas fa-plus me-2"></i> Tambah Materi
+                                        </div>
+                                        <div class="btn-group">
+                                            <c:choose>
+                                                <c:when test="${material.contentType == 'QUIZ'}">
+                                                    <a href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/quiz/${material.materialId}" class="btn btn-sm btn-outline-primary" title="Edit Quiz">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/material/${material.materialId}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteMaterial(${material.materialId}, '${material.title}')" title="Hapus">
+                                                <i class="fas fa-trash"></i>
                                             </button>
-                                            <ul class="dropdown-menu w-100">
-                                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/material/add?type=VIDEO"><i class="fas fa-play text-danger me-2"></i> Video</a></li>
-                                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/material/add?type=TEXT"><i class="fas fa-file-alt text-primary me-2"></i> Teks/Artikel</a></li>
-                                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/material/add?type=PDF"><i class="fas fa-file-pdf text-warning me-2"></i> PDF/Dokumen</a></li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/quiz/add"><i class="fas fa-question-circle me-2" style="color: var(--primary);"></i> Quiz</a></li>
-                                            </ul>
                                         </div>
                                     </div>
-                                </div>
+                                </c:forEach>
                             </div>
-                        </c:forEach>
+                            
+                            <!-- Add Material Dropdown -->
+                            <div class="dropdown mt-3">
+                                <button class="btn add-material-btn w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-plus me-2"></i> Tambah Materi
+                                </button>
+                                <ul class="dropdown-menu w-100">
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/material/add?type=VIDEO"><i class="fas fa-play text-danger me-2"></i> Video</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/material/add?type=TEXT"><i class="fas fa-file-alt text-primary me-2"></i> Teks/Artikel</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/material/add?type=PDF"><i class="fas fa-file-pdf text-warning me-2"></i> PDF/Dokumen</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/${section.sectionId}/quiz/add"><i class="fas fa-question-circle text-primary me-2"></i> Quiz</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="empty-state">
-                        <div class="empty-state-icon"><i class="fas fa-layer-group"></i></div>
-                        <h4 class="fw-bold mb-2">Belum Ada Bab</h4>
-                        <p class="text-muted mb-4">Mulai tambahkan bab untuk menyusun materi kursus Anda.</p>
-                        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#sectionModal">
-                            <i class="fas fa-plus me-2"></i> Tambah Bab Pertama
-                        </button>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+                </c:forEach>
+            </div>
             
             <!-- Add Section Button -->
-            <c:if test="${not empty sections}">
-                <button type="button" class="btn add-btn w-100 py-3 mt-3" data-bs-toggle="modal" data-bs-target="#sectionModal">
-                    <i class="fas fa-plus me-2"></i> Tambah Bab Baru
-                </button>
-            </c:if>
+            <button type="button" class="btn add-section-btn w-100 py-3" data-bs-toggle="modal" data-bs-target="#sectionModal">
+                <i class="fas fa-plus me-2"></i> Tambah Bab Baru
+            </button>
         </main>
     </div>
     
@@ -282,7 +246,7 @@
     <div class="modal fade" id="sectionModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/save" method="POST" id="sectionForm">
+                <form action="${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/save" method="POST">
                     <input type="hidden" name="sectionId" id="sectionId" value="">
                     <div class="modal-header border-0">
                         <h5 class="modal-title"><i class="fas fa-layer-group text-primary me-2"></i><span id="sectionModalTitle">Tambah Bab Baru</span></h5>
@@ -293,15 +257,9 @@
                             <label class="form-label fw-semibold">Judul Bab <span class="text-danger">*</span></label>
                             <input type="text" name="title" id="sectionTitle" class="form-control" required placeholder="Contoh: Pengenalan Python">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-0">
                             <label class="form-label fw-semibold">Deskripsi (Opsional)</label>
                             <textarea name="description" id="sectionDescription" class="form-control" rows="3" placeholder="Deskripsi singkat tentang bab ini..."></textarea>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="isPreview" id="sectionIsPreview" value="true">
-                            <label class="form-check-label" for="sectionIsPreview">
-                                Tandai sebagai Free Preview (dapat dilihat tanpa membeli)
-                            </label>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
@@ -361,38 +319,27 @@
     
     <script>
         // Initialize Sortable for sections
-        const sectionsContainer = document.getElementById('sectionsContainer');
-        if (sectionsContainer) {
-            new Sortable(sectionsContainer, {
+        new Sortable(document.getElementById('sectionsContainer'), {
+            animation: 150,
+            handle: '.section-drag-handle',
+            ghostClass: 'dragging',
+            onEnd: function(evt) {
+                updateSectionOrder();
+            }
+        });
+        
+        // Initialize Sortable for materials in each section
+        document.querySelectorAll('.materials-list').forEach(function(list) {
+            new Sortable(list, {
                 animation: 150,
-                handle: '.section-drag-handle',
+                handle: '.drag-handle',
                 ghostClass: 'dragging',
+                group: 'materials',
                 onEnd: function(evt) {
-                    updateSectionOrder();
+                    updateMaterialOrder(evt.to.dataset.sectionId);
                 }
             });
-            
-            // Initialize Sortable for materials in each section
-            document.querySelectorAll('.materials-list').forEach(function(list) {
-                new Sortable(list, {
-                    animation: 150,
-                    handle: '.drag-handle',
-                    ghostClass: 'dragging',
-                    group: 'materials',
-                    onEnd: function(evt) {
-                        updateMaterialOrder(evt.to.dataset.sectionId);
-                    }
-                });
-            });
-        }
-        
-        // Toggle section
-        function toggleSection(header) {
-            const card = header.closest('.section-card');
-            const icon = header.querySelector('.section-toggle-icon');
-            card.classList.toggle('section-collapsed');
-            icon.style.transform = card.classList.contains('section-collapsed') ? 'rotate(-90deg)' : 'rotate(0deg)';
-        }
+        });
         
         // Update section order via AJAX
         function updateSectionOrder() {
@@ -408,8 +355,7 @@
         
         // Update material order via AJAX
         function updateMaterialOrder(sectionId) {
-            const container = document.querySelector('.materials-list[data-section-id="' + sectionId + '"]');
-            const materials = container.querySelectorAll('.material-item');
+            const materials = document.querySelectorAll('[data-section-id="' + sectionId + '"] .material-item');
             const order = Array.from(materials).map(m => m.dataset.materialId);
             
             fetch('${pageContext.request.contextPath}/lecturer/course/${course.courseId}/section/' + sectionId + '/materials/reorder', {
@@ -420,11 +366,10 @@
         }
         
         // Edit section
-        function editSection(sectionId, title, description, isPreview) {
+        function editSection(sectionId, title, description) {
             document.getElementById('sectionId').value = sectionId;
             document.getElementById('sectionTitle').value = title;
             document.getElementById('sectionDescription').value = description || '';
-            document.getElementById('sectionIsPreview').checked = isPreview;
             document.getElementById('sectionModalTitle').textContent = 'Edit Bab';
             new bootstrap.Modal(document.getElementById('sectionModal')).show();
         }
@@ -448,7 +393,6 @@
             document.getElementById('sectionId').value = '';
             document.getElementById('sectionTitle').value = '';
             document.getElementById('sectionDescription').value = '';
-            document.getElementById('sectionIsPreview').checked = false;
             document.getElementById('sectionModalTitle').textContent = 'Tambah Bab Baru';
         });
     </script>

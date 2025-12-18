@@ -132,30 +132,42 @@
                 <p style="color: var(--gray-600);">Orang-orang hebat di balik NusaTech</p>
             </div>
             
-            <div class="grid grid-4">
-                <div style="text-align: center;">
-                    <img src="https://ui-avatars.com/api/?name=Ahmad+Zaki&background=8B1538&color=fff&size=150" 
-                         alt="CEO" style="border-radius: 50%; margin-bottom: 1rem;">
-                    <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Ahmad Zaki</h4>
-                    <p style="color: var(--gray-500); font-size: 0.875rem;">CEO & Founder</p>
+            <div>
+                <!-- Row 1: 4 Team Members -->
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; padding: 2rem;">
+                    <div style="text-align: center;">
+                        <img src="https://ui-avatars.com/api/?name=Gabriel+Edbert+Liandrew&background=8B1538&color=fff&size=150" 
+                             alt="CEO" style="border-radius: 50%; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Gabriel Edbert Liandrew</h4>
+                        <p style="color: var(--gray-500); font-size: 0.875rem;">CEO & Founder</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://ui-avatars.com/api/?name=Muhammad+Umar&background=D4AF37&color=fff&size=150" 
+                             alt="CTO" style="border-radius: 50%; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Muhammad Umar</h4>
+                        <p style="color: var(--gray-500); font-size: 0.875rem;">CTO</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://ui-avatars.com/api/?name=Hanif+Imaddudin&background=3498db&color=fff&size=150" 
+                             alt="Head of Content" style="border-radius: 50%; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Hanif Imaddudin</h4>
+                        <p style="color: var(--gray-500); font-size: 0.875rem;">Head of Content</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://ui-avatars.com/api/?name=Naufal+Arkan+Wahib&background=27ae60&color=fff&size=150" 
+                             alt="Head of Marketing" style="border-radius: 50%; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Naufal Arkan Wahib</h4>
+                        <p style="color: var(--gray-500); font-size: 0.875rem;">Head of Marketing</p>
+                    </div>
                 </div>
-                <div style="text-align: center;">
-                    <img src="https://ui-avatars.com/api/?name=Siti+Nurhaliza&background=D4AF37&color=fff&size=150" 
-                         alt="CTO" style="border-radius: 50%; margin-bottom: 1rem;">
-                    <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Siti Nurhaliza</h4>
-                    <p style="color: var(--gray-500); font-size: 0.875rem;">CTO</p>
-                </div>
-                <div style="text-align: center;">
-                    <img src="https://ui-avatars.com/api/?name=Budi+Santoso&background=3498db&color=fff&size=150" 
-                         alt="Head of Content" style="border-radius: 50%; margin-bottom: 1rem;">
-                    <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Budi Santoso</h4>
-                    <p style="color: var(--gray-500); font-size: 0.875rem;">Head of Content</p>
-                </div>
-                <div style="text-align: center;">
-                    <img src="https://ui-avatars.com/api/?name=Dewi+Lestari&background=27ae60&color=fff&size=150" 
-                         alt="Head of Marketing" style="border-radius: 50%; margin-bottom: 1rem;">
-                    <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Dewi Lestari</h4>
-                    <p style="color: var(--gray-500); font-size: 0.875rem;">Head of Marketing</p>
+                <!-- Row 2: 1 Team Member (Centered) -->
+                <div style="display: flex; justify-content: center; padding: 1rem 2rem 2rem 2rem;">
+                    <div style="text-align: center;">
+                        <img src="https://ui-avatars.com/api/?name=Putu+Padmanaba&background=9B59B6&color=fff&size=150" 
+                             alt="Head of Product" style="border-radius: 50%; margin-bottom: 1rem;">
+                        <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Putu Padmanaba</h4>
+                        <p style="color: var(--gray-500); font-size: 0.875rem;">Head of Product</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -300,8 +300,10 @@ h6 { font-size: var(--font-size-base); }
 }
 
 .navbar-brand img {
-    height: 44px;
+    height: 36px;
     width: auto;
+    max-width: 36px;
+    object-fit: contain;
 }
 
 .navbar-brand-text {
@@ -430,6 +432,7 @@ h6 { font-size: var(--font-size-base); }
     min-width: 220px;
     opacity: 0;
     visibility: hidden;
+    z-index: 9999;
     transform: translateY(-10px);
     transition: all var(--transition-fast);
     z-index: var(--z-dropdown);

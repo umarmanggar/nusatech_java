@@ -40,16 +40,16 @@
                     </a>
                     
                     <!-- User Dropdown -->
-                    <div class="user-dropdown">
-                        <div class="user-dropdown-toggle">
+                    <div class="user-dropdown" id="userDropdownContainer">
+                        <div class="user-dropdown-toggle" onclick="toggleUserDropdown(event)">
                             <img src="https://ui-avatars.com/api/?name=${sessionScope.user.name}&background=8B1538&color=fff" 
                                  alt="${sessionScope.user.name}">
                             <span style="font-weight: 500; color: var(--gray-700);">${sessionScope.user.name}</span>
                             <i class="fas fa-chevron-down" style="font-size: 0.75rem; color: var(--gray-500);"></i>
                         </div>
-                        <div class="user-dropdown-menu">
+                        <div class="user-dropdown-menu" id="userDropdownMenu">
                             <c:if test="${sessionScope.user.role == 'STUDENT'}">
-                                <a href="${pageContext.request.contextPath}/my-learning" class="user-dropdown-item">
+                                <a href="${pageContext.request.contextPath}/student/my-learning" class="user-dropdown-item">
                                     <i class="fas fa-book-open"></i> Belajar Saya
                                 </a>
                             </c:if>
@@ -75,6 +75,23 @@
                             </a>
                         </div>
                     </div>
+                    
+                    <script>
+                    function toggleUserDropdown(event) {
+                        event.stopPropagation();
+                        var menu = document.getElementById('userDropdownMenu');
+                        menu.classList.toggle('show');
+                    }
+                    
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(event) {
+                        var dropdown = document.getElementById('userDropdownContainer');
+                        var menu = document.getElementById('userDropdownMenu');
+                        if (dropdown && menu && !dropdown.contains(event.target)) {
+                            menu.classList.remove('show');
+                        }
+                    });
+                    </script>
                 </c:when>
                 <c:otherwise>
                     <!-- Guest user -->

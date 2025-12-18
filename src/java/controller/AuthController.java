@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author user
  */
-@WebServlet(name = "AuthController", urlPatterns = {"/AuthController"})
+@WebServlet(name = "AuthController", urlPatterns = {"/login", "/logout", "/register"})
 public class AuthController extends HttpServlet {
 
     /**
